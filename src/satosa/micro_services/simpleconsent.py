@@ -200,10 +200,11 @@ class SimpleConsent(ResponseMicroService):
         all_attrs = ConsentGroups(self.consent_groups)
         for attr_name, attr_name_translated in self.consent_attrname_display.items():
             if attr_name in not_filtered_attrs:
+                val = ','.join(attr[attr_name])
                 all_attrs.add(ConsentAttribute(
                     attr_name,
                     attr_name_translated,
-                    attr[attr_name]
+                    val
                 ))
         consent_attributes = all_attrs.as_struct()
 
