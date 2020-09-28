@@ -34,6 +34,60 @@ logger = logging.getLogger(__name__)
 RESPONSE_STATE = "Saml2IDP"
 CONSENT_ID = "SimpleConsent"
 CONSENT_INT_DATA = 'simpleconsent.internaldata'
+VERIFY_SSL = False
+
+
+class ConsentAttribute(object):
+    def __init__(self, name, translation="", value=""):
+        self.name = name
+        self.translation = translation
+        self.value = value
+
+    def datadict(self):
+        return {
+            'name': self.name,
+            'trans': self.translation,
+            'val': self.value
+        }
+
+
+class ConsentGroups(object):
+    def __init__(self, config):
+        self.config = config
+        self.groups = {}
+        self.groupnames = list(self.config.keys())
+        self.groupnames.append(None)
+        self.groupattrs = []
+        self.otherattrs= []
+
+    def add(self, attr):
+        group = self.group_of_attr(attr)
+        if group:
+            self.groupattrs.append(attr)
+        else:
+            self.otherattrs.append(attr)
+
+    def group_of_attr(self, a):
+        for gname, gattrs in self.config.items():
+            if a.name in gattrs:
+                return gname
+        return None
+
+    def as_struct(self):
+        data = {}
+        for gname, gattrs in self.config.items():
+            attrs = []
+            for a in self.groupattrs:
+                if a.name in gattrs:
+                    attrs.append(a.datadict())
+            if attrs:
+                data.update({gname: attrs})
+        attrs = []
+        for a in self.otherattrs:
+            attrs.append(a.datadict())
+        if attrs:
+            data.update({'default': attrs})
+        return data
 
 
 class UnexpectedResponseError(Exception):
@@ -45,6 +99,7 @@ class SimpleConsent(ResponseMicroService):
         super().__init__(*args, **kwargs)
         self.consent_attrname_display = config['consent_attrname_display']
         self.consent_attr_not_displayed = config['consent_attr_not_displayed']
+        self.consent_groups = config['consent_groups']
         self.consent_cookie_name = config['consent_cookie_name']
         self.consent_service_api_auth = config['consent_service_api_auth']
         self.endpoint = "simpleconsent_response"
@@ -140,6 +195,18 @@ class SimpleConsent(ResponseMicroService):
             if attr_name in display_attr:
                 display_attr.discard(attr_name)
                 display_attr.add(attr_name_translated)
+
+        not_filtered_attrs: set = set.difference(set(attr), set(self.consent_attr_not_displayed))
+        all_attrs = ConsentGroups(self.consent_groups)
+        for attr_name, attr_name_translated in self.consent_attrname_display.items():
+            if attr_name in not_filtered_attrs:
+                all_attrs.add(ConsentAttribute(
+                    attr_name,
+                    attr_name_translated,
+                    attr[attr_name]
+                ))
+        consent_attributes = all_attrs.as_struct()
+
         displayname = attr['displayname'][0] if attr['displayname'] else ''
         entityid = response_state['resp_args']['sp_entity_id']
         sp_name = self.sp_entityid_names.get(entityid, entityid)
@@ -152,6 +219,7 @@ class SimpleConsent(ResponseMicroService):
             "mail": uid,
             "sp": sp_name,
             "attr_list": sorted(list(display_attr)),
+            "consent_attrs": consent_attributes,
         }
         consent_requ_json = json.dumps(consent_requ_dict)
         return consent_requ_json
@@ -165,7 +233,9 @@ class SimpleConsent(ResponseMicroService):
         try:
             api_cred = (self.consent_service_api_auth['userid'],
                         self.consent_service_api_auth['password'])
-            response = requests.request(method='GET', url=url, auth=(api_cred))
+
+            response = requests.request(method='GET', url=url, auth=(api_cred), verify=VERIFY_SSL)
+
             if response.status_code == 200:
                 return json.loads(response.text)
             else:
