@@ -3,8 +3,8 @@
 set -e
 
 # for Click library to work in satosa-saml-metadata
-export LC_ALL="C.UTF-8"
-export LANG="C.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
 
 if [ -z "${DATA_DIR}" ]
 then DATA_DIR=/opt/satosa/etc
@@ -15,7 +15,7 @@ then mkdir -p "${DATA_DIR}"
 fi
 
 if [ -z "${PROXY_PORT}" ]
-then PROXY_PORT="8000"
+then PROXY_PORT="8080"
 fi
 
 if [ -z "${METADATA_DIR}" ]
@@ -27,7 +27,7 @@ then cp -pr /opt/satosa/attributemaps "${DATA_DIR}/attributemaps"
 fi
 
 # activate virtualenv
-. /opt/satosa/bin/activate
+. /opt/venv/bin/activate
 
 # generate metadata for frontend(IdP interface) and backend(SP interface)
 # write the result to mounted volume
