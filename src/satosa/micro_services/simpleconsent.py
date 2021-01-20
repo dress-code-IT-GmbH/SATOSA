@@ -208,7 +208,10 @@ class SimpleConsent(ResponseMicroService):
                 ))
         consent_attributes = all_attrs.as_struct()
 
-        displayname = attr['displayname'][0] if attr['displayname'] else ''
+        try:
+            displayname = attr['displayname'][0] if attr['displayname'] else ''
+        except KeyError:
+            displayname = ''
         entityid = response_state['resp_args']['sp_entity_id']
         sp_name = self.sp_entityid_names.get(entityid, entityid)
         uid = attr['mail'][0] if attr['mail'] else ''
