@@ -212,6 +212,10 @@ class SimpleConsent(ResponseMicroService):
             displayname = attr['displayname'][0] if attr['displayname'] else ''
         except KeyError:
             displayname = ''
+        try:
+            mywkisurl = attr['mywkisurl'][0]
+        except KeyError:
+            mywkisurl = ''
         entityid = response_state['resp_args']['sp_entity_id']
         sp_name = self.sp_entityid_names.get(entityid, entityid)
         uid = attr['mail'][0] if attr['mail'] else ''
@@ -224,6 +228,7 @@ class SimpleConsent(ResponseMicroService):
             "sp": sp_name,
             "attr_list": sorted(list(display_attr)),
             "consent_attrs": consent_attributes,
+            "mywkisurl": mywkisurl,
         }
         consent_requ_json = json.dumps(consent_requ_dict)
         return consent_requ_json
