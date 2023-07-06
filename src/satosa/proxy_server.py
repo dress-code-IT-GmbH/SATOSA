@@ -122,7 +122,7 @@ class WsgiApplication(SATOSABase):
             resp = NotFound("Couldn't find the page you asked for!")
             return resp(environ, start_response)
 
-        context = Context()
+        context = Context(self)
         context.path = path
 
         # copy wsgi.input stream to allow it to be re-read later by satosa plugins

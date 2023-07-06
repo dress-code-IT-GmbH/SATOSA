@@ -173,7 +173,7 @@ class SATOSABase(object):
         :param error: The exception
         :return: response
         """
-        context = Context()
+        context = Context(self)
         context.state = error.state
         frontend = self.module_router.frontend_routing(context)
         return frontend.handle_backend_error(error)

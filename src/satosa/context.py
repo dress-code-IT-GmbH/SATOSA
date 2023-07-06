@@ -1,6 +1,8 @@
 from warnings import warn as _warn
 
 from satosa.exception import SATOSABadContextError
+import json
+from satosa.state import State
 
 
 class Context(object):
@@ -15,7 +17,8 @@ class Context(object):
     KEY_AUTHN_CONTEXT_CLASS_REF = 'authn_context_class_ref'
     KEY_TARGET_AUTHN_CONTEXT_CLASS_REF = 'target_authn_context_class_ref'
 
-    def __init__(self):
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
         self._path = None
         self.request = None
         self.request_uri = None
@@ -89,3 +92,36 @@ class Context(object):
 
         value = self.internal_data.get(key)
         return value
+
+    @staticmethod
+    def serializables():
+        return ['path', 'request', 'request_uri', 'request_method', 'qs_params', 'server', 'http_headers',
+                'cookie', 'request_authorization', 'state']
+
+    def get_serializeable(self):
+        data = {}
+        for attname in self.serializables():
+            if attname == 'state':
+                value = self.state.state_dict
+            else:
+                value = getattr(self, attname)
+            data.update({attname: value})
+        return data
+
+    def to_json(self):
+        data = self.get_serializeable()
+        r = json.dumps(data)
+        return r
+
+    @classmethod
+    def from_json(cls, wsgi_app, json_data):
+        data = json.loads(json_data)
+        new_context = cls(wsgi_app)
+        for attname in cls.serializables():
+            if attname == 'state':
+                new_context.state = State()
+                new_context.state.data = data['state']
+            else:
+                value = data[attname]
+                setattr(new_context, attname, value)
+        return new_context
