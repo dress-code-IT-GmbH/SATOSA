@@ -1,0 +1,15 @@
+[submodule "SATOSA"]
+	path = SATOSA
+	url = git@github.com:dress-code-IT-GmbH/SATOSA.git
+[submodule "plugins/satosa_cls_redis_store"]
+	path = plugins/satosa_cls_redis_store
+	url = git@github.com:dress-code-IT-GmbH/satosa_cls_redis_store.git
+[submodule "plugins/satosa_ms_adfs_redirect_url"]
+	path = plugins/satosa_ms_adfs_redirect_url
+	url = git@github.com:dress-code-IT-GmbH/satosa_ms_adfs_redirect_url.git
+[submodule "plugins/satosa_ms_filter_requester"]
+	path = plugins/satosa_ms_filter_requester
+	url = git@github.com:dress-code-IT-GmbH/satosa_ms_filter_requester.git
+[submodule "plugins/satosa_ms_simpleconsent"]
+	path = plugins/satosa_ms_simpleconsent
+	url = git@github.com:dress-code-IT-GmbH/satosa_ms_simpleconsent.git
