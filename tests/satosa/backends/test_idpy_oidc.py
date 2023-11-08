@@ -204,7 +204,7 @@ class TestIdpyOIDCBackend(object):
         self.setup_token_endpoint(all_user_claims)
         self.setup_userinfo_endpoint(all_user_claims)
 
-        response_context = Context()
+        response_context = Context(wsgi_app=None)
         response_context.request = incoming_authn_response
         response_context.state = context.state
 

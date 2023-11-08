@@ -8,7 +8,7 @@ from satosa.micro_services.idp_hinting import IdpHinting
 
 class TestIdpHinting(TestCase):
     def setUp(self):
-        context = Context()
+        context = Context(wsgi_app=None)
         context.state = State()
         internal_data = InternalData()
 

@@ -20,7 +20,7 @@ class TestAddSyntheticAttributes:
         resp.attributes = {
             "a1": ["test@example.com"],
         }
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.state = dict()
         authz_service.process(ctx, resp)
         assert("value1" in resp.attributes['a0'])
@@ -37,7 +37,7 @@ class TestAddSyntheticAttributes:
             "kaka": ["kaka1"],
             "eppn": ["a@example.com","b@example.com"]
         }
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.state = dict()
         authz_service.process(ctx, resp)
         assert("kaka1#example.com" in resp.attributes['a0'])
@@ -55,7 +55,7 @@ class TestAddSyntheticAttributes:
             "kaka": ["kaka1","kaka2"],
             "eppn": ["a@example.com","b@example.com"]
         }
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.state = dict()
         authz_service.process(ctx, resp)
         assert("kaka1#example.com" in resp.attributes['a0'])
@@ -73,7 +73,7 @@ class TestAddSyntheticAttributes:
             "kaka": ["kaka1", "kaka2"],
             "eppn": None,
         }
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.state = dict()
         authz_service.process(ctx, resp)
         assert("kaka1#" in resp.attributes['a0'])

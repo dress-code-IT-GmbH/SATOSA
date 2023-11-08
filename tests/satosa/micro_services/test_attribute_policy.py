@@ -43,7 +43,7 @@ class TestAttributePolicy:
             attribute_policy_service = self.create_attribute_policy_service(
                 attribute_policies)
 
-            ctx = Context()
+            ctx = Context(wsgi_app=None)
             ctx.state = dict()
 
             resp = InternalData(auth_info=AuthenticationInformation())

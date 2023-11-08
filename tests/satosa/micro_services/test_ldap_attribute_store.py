@@ -94,7 +94,7 @@ class TestLdapAttributeStore:
             uid = attributes['uid']
             response.attributes = {'uid': uid}
 
-            context = Context()
+            context = Context(wsgi_app=None)
             context.state = dict()
 
             ldap_attribute_store.process(context, response)

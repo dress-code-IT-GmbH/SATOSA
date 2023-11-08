@@ -32,7 +32,7 @@ class TestModuleRouter:
         for provider in BACKEND_NAMES
         ])
     def test_endpoint_routing_to_frontend(self, url_path, expected_frontend, expected_backend):
-        context = Context()
+        context = Context(wsgi_app=None)
         context.path = url_path
         self.router.endpoint_routing(context)
         assert context.target_frontend == expected_frontend
@@ -42,7 +42,7 @@ class TestModuleRouter:
         ("%s/response" % (provider,), provider) for provider in BACKEND_NAMES
         ])
     def test_endpoint_routing_to_backend(self, url_path, expected_backend):
-        context = Context()
+        context = Context(wsgi_app=None)
         context.path = url_path
         self.router.endpoint_routing(context)
         assert context.target_backend == expected_backend
@@ -53,7 +53,7 @@ class TestModuleRouter:
         ("response_microservice/callback", "ResponseService")
     ])
     def test_endpoint_routing_to_microservice(self, url_path, expected_micro_service):
-        context = Context()
+        context = Context(wsgi_app=None)
         context.path = url_path
         microservice_callable = self.router.endpoint_routing(context)
         assert context.target_micro_service == expected_micro_service

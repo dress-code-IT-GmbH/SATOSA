@@ -37,7 +37,7 @@ class TestAttributeAuthorization:
             "a0": ["test@example.com"],
         }
         try:
-           ctx = Context()
+           ctx = Context(wsgi_app=None)
            ctx.state = dict()
            authz_service.process(ctx, resp)
         except SATOSAAuthenticationError:
@@ -54,7 +54,7 @@ class TestAttributeAuthorization:
             "a0": ["bar"],
         }
         with pytest.raises(SATOSAAuthenticationError):
-           ctx = Context()
+           ctx = Context(wsgi_app=None)
            ctx.state = dict()
            authz_service.process(ctx, resp)
 
@@ -68,7 +68,7 @@ class TestAttributeAuthorization:
         resp.attributes = {
         }
         with pytest.raises(SATOSAAuthenticationError):
-           ctx = Context()
+           ctx = Context(wsgi_app=None)
            ctx.state = dict()
            authz_service.process(ctx, resp)
 
@@ -83,7 +83,7 @@ class TestAttributeAuthorization:
             "a0": ["foo2","kaka"],
         }
         try:
-           ctx = Context()
+           ctx = Context(wsgi_app=None)
            ctx.state = dict()
            authz_service.process(ctx, resp)
         except SATOSAAuthenticationError:
@@ -100,7 +100,7 @@ class TestAttributeAuthorization:
             "a0": ["foo2"],
         }
         with pytest.raises(SATOSAAuthenticationError):
-           ctx = Context()
+           ctx = Context(wsgi_app=None)
            ctx.state = dict()
            authz_service.process(ctx, resp)
 
@@ -115,7 +115,7 @@ class TestAttributeAuthorization:
             "a0": ["foo3"],
         }
         try:
-           ctx = Context()
+           ctx = Context(wsgi_app=None)
            ctx.state = dict()
            authz_service.process(ctx, resp)
         except SATOSAAuthenticationError:

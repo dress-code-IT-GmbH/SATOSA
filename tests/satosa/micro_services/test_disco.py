@@ -10,7 +10,7 @@ from satosa.micro_services.disco import DiscoToTargetIssuerError
 
 class TestDiscoToTargetIssuer(TestCase):
     def setUp(self):
-        context = Context()
+        context = Context(wsgi_app=None)
         context.state = State()
 
         config = {

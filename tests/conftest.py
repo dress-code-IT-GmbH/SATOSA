@@ -119,7 +119,7 @@ def idp_conf(cert_and_key):
 
 @pytest.fixture
 def context():
-    context = Context()
+    context = Context(wsgi_app=None)
     context.state = State()
     return context
 

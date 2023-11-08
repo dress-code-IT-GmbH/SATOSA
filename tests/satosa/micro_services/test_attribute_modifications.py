@@ -196,7 +196,7 @@ class TestFilterAttributeValues:
             "a1": ["abc:xyz"],
             "a2": ["foo:bar", "1:foo:bar:2"],
         }
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         filtered = filter_service.process(ctx, resp)
         assert filtered.attributes == {"a1": ["abc:xyz"], "a2": []}
 
@@ -217,7 +217,7 @@ class TestFilterAttributeValues:
             "a1": ["abc:xyz"],
             "a2": ["foo:bar", "1:foo:bar:2"],
         }
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         mdstore = MetadataStore(None, None)
         ctx.decorate(Context.KEY_METADATA_STORE, mdstore)
         filtered = filter_service.process(ctx, resp)
@@ -246,7 +246,7 @@ class TestFilterAttributeValues:
 
         mdstore = MetadataStore(None, Config())
         mdstore.imp(self.create_idp_metadata_conf_with_shibmd_scopes(idp_entityid, None))
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.decorate(Context.KEY_METADATA_STORE, mdstore)
 
         filtered = filter_service.process(ctx, resp)
@@ -275,7 +275,7 @@ class TestFilterAttributeValues:
 
         mdstore = MetadataStore(None, Config())
         mdstore.imp(self.create_idp_metadata_conf_with_shibmd_scopes(idp_entityid, ["foo.bar"]))
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.decorate(Context.KEY_METADATA_STORE, mdstore)
 
         filtered = filter_service.process(ctx, resp)
@@ -306,7 +306,7 @@ class TestFilterAttributeValues:
         mdstore.imp(self.create_idp_metadata_conf_with_shibmd_scopes(idp_entityid, [r"[^.]*\.foo\.bar$"]))
         # mark scope as regexp (cannot be done via pysaml2 YAML config)
         mdstore[idp_entityid]['idpsso_descriptor'][0]['extensions']['extension_elements'][0]['regexp'] = 'true'
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.decorate(Context.KEY_METADATA_STORE, mdstore)
 
         filtered = filter_service.process(ctx, resp)
@@ -335,7 +335,7 @@ class TestFilterAttributeValues:
 
         mdstore = MetadataStore(None, Config())
         mdstore.imp(self.create_idp_metadata_conf_with_shibmd_scopes(idp_entityid, ["foo.bar", "foo.baz"]))
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.decorate(Context.KEY_METADATA_STORE, mdstore)
 
         filtered = filter_service.process(ctx, resp)
@@ -364,7 +364,7 @@ class TestFilterAttributeValues:
 
         mdstore = MetadataStore(None, Config())
         mdstore.imp(self.create_idp_metadata_conf_with_shibmd_scopes(idp_entityid, ["foo.bar"]))
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.decorate(Context.KEY_METADATA_STORE, mdstore)
 
         filtered = filter_service.process(ctx, resp)
@@ -394,7 +394,7 @@ class TestFilterAttributeValues:
 
         mdstore = MetadataStore(None, Config())
         mdstore.imp(self.create_idp_metadata_conf_with_shibmd_scopes(idp_entityid, ["foo.bar"]))
-        ctx = Context()
+        ctx = Context(wsgi_app=None)
         ctx.decorate(Context.KEY_METADATA_STORE, mdstore)
 
         filtered = filter_service.process(ctx, resp)

@@ -201,7 +201,7 @@ class TestConsent:
                                      self.consent_module.base_url,
                                      requester_name)
 
-        new_context = Context()
+        new_context = Context(wsgi_app=None)
         new_context.state = context.state
         # Verify endpoint of consent service still gives 401 (no consent given)
         context, internal_response = self.consent_module._handle_consent_response(context)

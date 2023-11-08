@@ -4,7 +4,7 @@ from satosa.context import Context
 
 
 def test_path():
-    context = Context()
+    context = Context(wsgi_app=None)
     with pytest.raises(ValueError):
         context.path = None
 

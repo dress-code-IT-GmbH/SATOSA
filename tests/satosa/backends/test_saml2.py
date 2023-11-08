@@ -134,7 +134,7 @@ class TestSAMLBackend:
         disco_resp = parse_qs(urlparse(resp.message).query)
         info = parse_qs(urlparse(disco_resp["return"][0]).query)
         info["entityID"] = idp_conf["entityid"]
-        request_context = Context()
+        request_context = Context(wsgi_app=None)
         request_context.request = info
         request_context.state = context.state
 
@@ -151,7 +151,7 @@ class TestSAMLBackend:
             BINDING_HTTP_REDIRECT,
             "testuser1",
             response_binding=response_binding)
-        response_context = Context()
+        response_context = Context(wsgi_app=None)
         response_context.request = fake_idp_resp
         response_context.state = request_context.state
 

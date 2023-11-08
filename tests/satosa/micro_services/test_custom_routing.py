@@ -165,7 +165,7 @@ class TestDecideIfRequesterIsAllowed:
 
 class TestDecideBackendByTargetIssuer(TestCase):
     def setUp(self):
-        context = Context()
+        context = Context(wsgi_app=None)
         context.state = State()
 
         config = {
@@ -207,7 +207,7 @@ class TestDecideBackendByTargetIssuer(TestCase):
 
 class TestDecideBackendByRequester(TestCase):
     def setUp(self):
-        context = Context()
+        context = Context(wsgi_app=None)
         context.state = State()
 
         config = {
