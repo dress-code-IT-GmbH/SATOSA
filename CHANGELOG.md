@@ -1,5 +1,32 @@
 # Changelog
 
+## 8.5.1 (2025-02-10)
+
+- ldap_attribute_store plugin: Add configuration option `use_all_results` to
+  specify whether all LDAP results should be processed.
+- ldap_attribute_store plugin: Add configuration option `provider_attribute` to
+  define the extracted attribute (ie, domain) that will be used to select the LDAP
+  configuration.
+- ldap_attribute_store plugin: Add configuration option search_filter to define
+  complex LDAP queries, when the default search based on an identifier is not
+  good enough.
+- ldap_attribute_store plugin: Add configuration option pool_lifetime. The LDAP
+  Server may abandon connections after some time without notifying the client.
+  The new option allows to set the maximum pool lifetime, so that connections
+  close on the client side.
+
+
+## 8.5.0 (2025-01-08)
+
+- openid connect backend: Add OAuth2/OIDC backend based on idpy-oidc (new extra requirement `idpy_oidc_backend` to pull the library dependecy)
+- apple backend: Rework the Apple backend to be based on the generic OpenIDConnectBackend and fix the userinfo loading
+- Restructure fatal error messages to redirect to generic error page when an errors occur
+- Allow multiple values for the "resource" query param
+- Fix checks for missing state from cookie and missing relay state
+- Allow loading of tuples from YAML configs
+- docs: minor fixes
+
+
 ## 8.4.0 (2023-06-11)
 
 - Make cookie parameters configurable
